@@ -1,32 +1,54 @@
 # Node.js dependencies
-/node_modules/
-
-# Logs
-*.log
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Environment files
+# Environment variables
 .env
-.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Build output
-/dist/
-/build/
+# Vercel build output
+.vercel/
+.next/
+dist/
+out/
 
-# Dependency directories
-bower_components/
+# TypeScript build artifacts
+*.tsbuildinfo
+tsconfig.tsbuildinfo
 
-# IDE and OS-specific files
-.vscode/
-.idea/
+# Logs & OS files
+logs/
+*.log
+*.gz
+*.swp
 .DS_Store
 Thumbs.db
 
-# Test coverage
-/coverage/
+# Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
-# Miscellaneous files
-*.tgz
-*.swp
+# Linting and testing
+coverage/
+jest/
+cypress/screenshots/
+cypress/videos/
+
+# Build artifacts
+build/
+.cache/
+.tmp/
+public/
+
+# Ignore local uploads (e.g., Cloudinary)
+uploads/
