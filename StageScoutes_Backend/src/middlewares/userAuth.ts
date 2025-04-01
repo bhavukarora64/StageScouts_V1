@@ -27,22 +27,23 @@ function userAuth(req, res, next){
         
         if(response){
             // @ts-ignore
-            req.db.query('SELECT UserId from Users WHERE UserId = ?', [response.userId], (err, userRecord) => {
+            req.db.query('SELECT userId from Users WHERE userId = ?', [response.userId], (err, userRecord) => {
                 if(err){
                     return res.status(500).json({
                                 "error":  "Something Went Wrong, Please try again after refreshing the page!"
                             })
                 }
 // @ts-ignore
-                if(!userRecord[0].UserId || !response.userId){
+                if(!userRecord[0].userId || !response.userId){
                     return res.status(500).json({
                         "error":  "Something Went Wrong, Please try again after refreshing the page!"
                     })
                 }
 // @ts-ignore
-                if(userRecord[0].UserId == response.userId){
+                if(userRecord[0].userId == response.userId){
                     // @ts-ignore
-                    req.body.UserId = response.userId;
+                    req.userId = response.userId;
+                    console.log(req);
                     next();
                 }else{
                     return res.status(404).json({

@@ -1,141 +1,143 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import { v4 as uuid4 } from 'uuid';
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 dotenv.config();
+
 // @ts-ignore
-async function userSignup(req, res){
-    try
-    {
-        const {firstName, lastName, emailId, mobileNumber, password}: {firstName:string, lastName:string, emailId:string, mobileNumber:string, password:string} = req.body;
+async function userSignup(req, res) {
+    try {
+        const { name, email, password }: { name: string, email: string, password: string } = req.body;
+        console.log(name)
 
         const userId = uuid4();
 
-        if(!firstName || !lastName || !emailId || !mobileNumber || !password || !userId){
+        if (!name || !email || !password) {
             return res.status(400).json({
-                "error": "Missing mandtory values, Please enter all the mandatory values"
-            })
+                "error": "Missing mandatory values, Please enter all the mandatory values"
+            });
         }
-    
-        const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
-    
-        const newUser = {userId: userId, firstName : firstName, lastName: lastName, emailId:emailId, mobileNumber: mobileNumber };
-        
-        //Adding User
-        req.db.query('INSERT INTO Users SET ?', newUser, (err:any) => {
-            if(err){
+
+        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS || '10'));
+
+        const newUser = { userId: userId, name: name, email: email };
+
+        // Adding User
+        req.db.query('INSERT INTO Users SET ?', newUser, (err: any) => {
+            if (err) {
                 return res.status(500).json({
-                    'error': "Something Went Wrong, Please try again after refreshing the page!"
-                })
-                
+                    'error': "Something Went Wrong, Please try again after refreshing the page!: " +err
+                });
             }
-    
-            //Adding Credentials
-            const newUserCredentails = {UserId: userId, HashedPassword: hashedPassword};
-    
-            req.db.query('INSERT INTO UserCredentials SET ?', newUserCredentails, (err:any) => {
-                if(err){
+
+            // Adding Credentials
+            const newUserCredentials = { userId: userId, hashedPassword: hashedPassword };
+
+            req.db.query('INSERT INTO UserCredentials SET ?', newUserCredentials, (err: any) => {
+                if (err) {
                     return res.status(500).json({
                         'error': "Something Went Wrong, Please try again after refreshing the page!"
-                    })
+                    });
                 }
-                
-            });        
+
+                return res.status(201).json({
+                    'message': "User registered successfully!"
+                });
+            });
         });
-    }
-    catch(e)
-    {
+    } catch (e) {
         return res.status(500).json({
             'error': "Something Went Wrong, Please try again after refreshing the page!"
-        })
+        });
     }
-
 }
-// @ts-ignore
-function userLogin(req, res){
-    try{
-        const {username, password}: {username:string, password:string} = req.headers;
 
-        if(!username || !password){
-           return res.status(400).json({
-                "error": "Manadatory Values Missing, Please recheck"
-            })
+// @ts-ignore
+function userLogin(req, res) {
+    try {
+        const { email, password }: { email: string, password: string } = req.headers;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                "error": "Mandatory values missing, Please recheck"
+            });
         }
-    
-         req.db.query('SELECT userId, emailId FROM Users WHERE emailId = ?', [username], (err:any, userResults:any) => {
-            if(err){
+
+        req.db.query('SELECT userId, email FROM Users WHERE email = ?', [email], (err: any, userResults: any) => {
+            if (err) {
                 return res.status(500).json({
                     'error': "Something Went Wrong, Please try again after refreshing the page!"
-                })
+                });
             }
             try {
-
-                if(!userResults[0].userId){
+                if (!userResults[0]?.userId) {
                     return res.status(403).json({
-                        'error': "Unauthorized ! Please register and then try to login !"
-                    })
+                        'error': "Unauthorized! Please register and then try to login!"
+                    });
                 }
 
-                req.db.query('SELECT UserId, hashedPassword from UserCredentials WHERE UserId = ?', [userResults[0].userId], async (err:any, result:any) => {
-                    if(err){
+                req.db.query('SELECT userId, hashedPassword FROM UserCredentials WHERE userId = ?', [userResults[0].userId], async (err: any, result: any) => {
+                    if (err) {
                         return res.status(500).json({
                             'error': "Something Went Wrong, Please try again after refreshing the page!"
-                        })
+                        });
                     }
-                    const isUserValid =  await bcrypt.compare(password, result[0].hashedPassword);
-        
-                    if(isUserValid){
+                    const isUserValid = await bcrypt.compare(password, result[0]?.hashedPassword);
+
+                    if (isUserValid) {
                         if (!process.env.JWT_SECRET) {
                             throw new Error("JWT_SECRET is not defined in environment variables");
                         }
-                        const jwtToken = jwt.sign({userId: userResults[0].userId}, process.env.JWT_SECRET, {
+                        const jwtToken = jwt.sign({ userId: userResults[0].userId }, process.env.JWT_SECRET, {
                             expiresIn: 624000
-                        })
-                        if(jwtToken) res.send({
-                            'Authorization': jwtToken
-                        })
+                        });
+                        if (jwtToken) {
+                            return res.status(200).json({
+                                'Authorization': jwtToken
+                            });
+                        }
+                    } else {
+                        return res.status(403).json({
+                            'error': "Invalid credentials, please try again!"
+                        });
                     }
-        
                 });
-                
             } catch (e) {
                 return res.status(500).json({
-                    'error': "Something Went Wrong, Please check your credentails or try after some time !"
-                })
+                    'error': "Something Went Wrong, Please check your credentials or try after some time!"
+                });
             }
-            
         });
-    }
-    catch(e:any){
+    } catch (e: any) {
         return res.status(500).json({
             'error': e.message
-        })
-        
+        });
     }
-
 }
-// @ts-ignore
-function userVerification(req, res){
-    try{
-        const userId:string = req.body.UserId;
 
-        if(userId){
+// @ts-ignore
+function userVerification(req, res) {
+    try {
+        const { userId }: { userId: string } = req;
+
+        if (userId) {
             return res.status(200).json({
                 'userId': userId,
                 'error': null
-            })
-        }else{
+            });
+        } 
+        else 
+        {
             return res.status(404).json({
-                'error': "User Not Found !"
-            })
+                'error': "User Not Found!"
+            });
         }
-    }catch(e:any){
-       return  res.status(500).json({
+    } catch (e: any) {
+        return res.status(500).json({
             'error': e.message
-        })
+        });
     }
 }
-
 
 export {
     userSignup,

@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.get('/', getImages);
 
-router.post('/upload', userAuth , publishImages);
+router.post('/upload', publishImages);
 
 export default router;
