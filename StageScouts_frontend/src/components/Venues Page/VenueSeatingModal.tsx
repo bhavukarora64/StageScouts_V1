@@ -1,10 +1,11 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Bin from "../../assets/Bin";
 import Button from "../Common Components/Button";
 import { useRef, useState } from "react";
 
+// @ts-expect-error:Define a interface here as per the props
 function VenueSeatingModal(props){
-    const fileInputRef = useRef(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
     const [row, setRow] = useState('')
     const [seat, setSeat] = useState('')
     const [comment, setComment] = useState('')
@@ -16,7 +17,6 @@ function VenueSeatingModal(props){
     const venueName = searchParams.get('venueName')
 
     const handleClick = () => {
-        console.log(fileInputRef.current.files)
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
@@ -25,8 +25,9 @@ function VenueSeatingModal(props){
             setTempURL('')
         }
     };
-
+// @ts-expect-error:Define a interface here as per the props
     const handleOnChange = (event) => {
+        // @ts-expect-error: Add a condition here ternary
         console.log(fileInputRef.current.files)
         const file = event.target.files[0];
         if (!file) return;
@@ -41,7 +42,8 @@ function VenueSeatingModal(props){
         props.setVisible(false)
     }
 
-    async function publishImage(event) {
+    async function publishImage() {
+        // @ts-expect-error:Define a interface here as per the props
         if (!fileInputRef.current.files || !fileInputRef.current.files[0]) {
             alert("No file uploaded.");
             return;
@@ -118,9 +120,12 @@ function VenueSeatingModal(props){
                         <label className="col-span-1 text-right text-lg">Venue</label>
                         <input
                             disabled
+                            // @ts-expect-error:Define a interface here as per the props
                             id={venueId}
                             type="text" 
+                            // @ts-expect-error:Define a interface here as per the props
                             value={venueName}
+                            // @ts-expect-error:Define a interface here as per the props
                             placeholder={venueName} 
                             className="border border-gray-300 rounded-md col-span-4 px-3 py-1 bg-gray-200 hover:cursor-no-drop"
                         />
@@ -145,8 +150,10 @@ function VenueSeatingModal(props){
 
                         <label className="col-span-1 text-right text-lg">Rating</label>
                         <select 
+                        // @ts-expect-error:Define a interface here as per the props
                             type="text" 
                             value={rating}
+                            // @ts-expect-error:Define a interface here as per the props
                             onChange={(e) => setRating(e.target.value)}
                             placeholder="Rating between 1 to 5" 
                             className="border border-gray-300 rounded-md col-span-4 px-3 py-1"

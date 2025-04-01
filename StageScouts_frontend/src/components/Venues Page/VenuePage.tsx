@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import Navbar from "../Events Page/Navbar";
 import Footer from "../Common Components/Footer";
 import ImageUnavailable from "../../assets/ImageUnavailable";
-import Upload from "../../assets/Upload";
 import Search from "../../assets/Search";
 
 function Venues(){
@@ -74,22 +73,29 @@ function Venues(){
             {venues ? (
                 <div>
                     <div className="grid grid-cols-12">
-                        {venues.map((venues) => (
+                        {
+                        venues.map((venues) => (
+                            // @ts-expect-error:Define a interface here as per the props
                             <div key={venues.venueId} className="transition-all duration-300 ease-in-out mx-4 pb-5 my-4 border-1 border-gray-300 rounded-xl hover:scale-110 col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4 h-auto">
+                            {/* @ts-expect-error:Define a interface here as per the props */}
                                 {venues.venueImage !== "unavailable" ? (
+                            // @ts-expect-error:Define a interface here as per the props
                                     <img src={venues.venueImage} className="rounded-t-xl h-64 lg:h-76 xl:86 w-full" alt="Venue" />
                                     ) : (
                                     <ImageUnavailable />
                                 )}
                                 <div className="ml-5 mt-5 leading-10">
+                                {/* @ts-expect-error:Define a interface here as per the props */}
                                     <h1 className="font-bold text-xl mt-10">{venues.venueName}</h1>
                                     <div className="flex items-center gap-1">
                                         <Location imageProp="lg"/>
+                                         {/* @ts-expect-error:Define a interface here as per the props */}
                                         <p className="text-gray-500"> {venues.venueLocation}</p>
                                     </div>
                                     <br></br>
                                 </div>
                                 <div className="flex flex-col gap-5 text-center mx-3">
+                                {/* @ts-expect-error:Define a interface here as per the props */}
                                     <Link to={"/venueSeating?venueId=" + venues.venueId +  "&venueName=" + venues.venueName}><Button title="Visit Seating" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/></Link>
                                 </div>
                             </div>

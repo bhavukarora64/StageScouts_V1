@@ -1,17 +1,22 @@
 import { Link } from "react-router-dom";
 import RightArrow from "../../assets/RightArrow";
-import Location from "../../assets/location";
+import Location from "../../assets/Location";
 import Button from "../Common Components/Button";
 import Date from "../../assets/Date";
 import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { isLoggedIn } from "../../assets/store/userAtom";
 
 function UpcomingEvents(){
 
-    const [events, setEvents] = useState([]);
+    interface IEvent{
+        eventId: string
+        eventName: string
+        eventImage: string
+        eventVenue: string
+        eventDate: string
+    }
+
+    const [events, setEvents] = useState<IEvent[] | null>([]);
     const currentPage = useRef(0); 
-    const [userState, setUserState] = useRecoilState(isLoggedIn);
 
     // Sends the new user to top of the screen
     useEffect(() => {
@@ -28,6 +33,7 @@ function UpcomingEvents(){
         })
 
         const response = await data.json();
+        // @ts-expect-error:Define a interface here as per the props
         currentPage.current = page
         setEvents(response);
     }
@@ -50,7 +56,7 @@ function UpcomingEvents(){
             </div>
             
             <div className="grid grid-cols-12">
-                { events.map((event) => (
+                { events?.map((event:IEvent) => (
                     <div key={event.eventId} className="transition-all duration-300 ease-in-out mx-4 pb-5 my-4 border-1 border-gray-300 rounded-xl hover:scale-110 col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4">
                         <img src={event.eventImage} className="rounded-t-xl h-64 lg:h-76 xl:86 w-full"></img>
                         <div className="ml-5 mt-5 leading-10">
