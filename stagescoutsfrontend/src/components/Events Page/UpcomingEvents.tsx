@@ -13,6 +13,7 @@ function UpcomingEvents(){
         eventImage: string
         eventVenue: string
         eventDate: string
+        eventURL: string
     }
 
     const [events, setEvents] = useState<IEvent[] | null>([]);
@@ -72,7 +73,7 @@ function UpcomingEvents(){
                             <br></br>
                         </div>
                         <div className="mx-5 flex flex-col justify-center items-center">
-                                    <Button title="Buy Tickets" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/>
+                                    <Link to={event.eventURL}><Button title="Buy Tickets" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/></Link>
                                     <Link to={"https://stage-scouts.vercel.app/venueSeating?venueName=" + event.eventVenue} className="flex gap-2 mt-2 hover:underline">
                                         <p>Visit Seating </p> 
                                         <RightArrow imageProp="md"/>
