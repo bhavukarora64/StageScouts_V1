@@ -9,7 +9,6 @@ import Venues from './components/Venues Page/VenuePage';
 import VenueSeating from './components/Venues Page/VenueSeating';
 import LoginPage from './components/Authentication Pages/LoginPage';
 import SignupPage from './components/Authentication Pages/SignupPage';
-import {RecoilRoot} from 'recoil';
 
 function App() {
   return (
