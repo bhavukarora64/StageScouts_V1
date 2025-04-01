@@ -9,9 +9,10 @@ import Venues from './components/Venues Page/VenuePage';
 import VenueSeating from './components/Venues Page/VenueSeating';
 import LoginPage from './components/Authentication Pages/LoginPage';
 import SignupPage from './components/Authentication Pages/SignupPage';
-
+import { RecoilRoot } from 'recoil'
 function App() {
   return (
+    <RecoilRoot>
         <BrowserRouter>
           <Routes>
             <Route index path="/" element={<LandingPage/>} />
@@ -26,6 +27,7 @@ function App() {
             <Route path="*" element={<ContactPage/>} />
           </Routes>
         </BrowserRouter>
+    </RecoilRoot>
   )
 }
 

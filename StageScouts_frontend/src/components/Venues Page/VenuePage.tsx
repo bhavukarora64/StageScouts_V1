@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import RightArrow from "../../assets/RightArrow";
-import Location from "../../assets/location";
+import Location from "../../assets/Location";
 import Button from "../Common Components/Button";
 import { useEffect, useRef, useState } from "react";
 import Navbar from "../Events Page/Navbar";
