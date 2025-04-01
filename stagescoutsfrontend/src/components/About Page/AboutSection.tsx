@@ -1,5 +1,5 @@
 import { Eye, Map, Smile } from "lucide-react";
-import CEOImage from "../../assets/ceo.png";
+import CEOImage from "../../assets/CEO.png";
 import { useEffect } from "react";
 
 const AboutPage = () => {
