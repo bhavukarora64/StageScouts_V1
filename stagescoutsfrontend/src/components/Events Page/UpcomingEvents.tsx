@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RightArrow from "../../assets/RightArrow";
 import Location from "../../assets/Location";
 import Button from "../Common Components/Button";
@@ -18,6 +18,7 @@ function UpcomingEvents(){
 
     const [events, setEvents] = useState<IEvent[] | null>([]);
     const currentPage = useRef(0); 
+    const navigate = useNavigate();
 
     // Sends the new user to top of the screen
     useEffect(() => {
@@ -73,7 +74,7 @@ function UpcomingEvents(){
                             <br></br>
                         </div>
                         <div className="mx-5 flex flex-col justify-center items-center">
-                                    <Link to={event.eventURL}><Button title="Buy Tickets" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/></Link>
+                                    <Button onClick={() => {navigate(event.eventURL)}} title="Buy Tickets" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/>
                                     <Link to={"https://stage-scouts.vercel.app/venueSeating?venueName=" + event.eventVenue} className="flex gap-2 mt-2 hover:underline">
                                         <p>Visit Seating </p> 
                                         <RightArrow imageProp="md"/>
