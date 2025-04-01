@@ -57,7 +57,7 @@ function FeatureSection(){
                             <br></br>
                         </div>
                         <div className="mx-5 mb-2">
-                            <Link to={"http://localhost:5173/venueSeating?venueName=" + event.eventVenue}>
+                            <Link to={"https://stage-scouts.vercel.app/venueSeating?venueName=" + event.eventVenue}>
                                 <Button title="Visit Seating" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/>
                             </Link>
                         </div>
