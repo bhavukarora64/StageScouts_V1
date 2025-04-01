@@ -25,7 +25,7 @@ function Navbar(){
             return false;
           }
     
-          const response = await fetch(`http://localhost:3001/me`, {
+          const response = await fetch(`https://stage-scouts-v1-backend.vercel.app/me`, {
             method: "GET",
             headers: { "authorization": token }
           });

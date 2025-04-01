@@ -25,7 +25,7 @@ function UpcomingEvents(){
 
     // Fetch the Events list from the Ticket Master API
     async function getEvents(page:number | null){
-        const data  = await fetch('http://localhost:3001/api/events/all?pageNumber=' + page, {
+        const data  = await fetch('https://stage-scouts-v1-backend.vercel.app/api/events/all?pageNumber=' + page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'applicatiposton/json'

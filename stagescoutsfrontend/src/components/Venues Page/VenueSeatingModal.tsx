@@ -72,7 +72,7 @@ function VenueSeatingModal(props){
                 alert('Something went wrong, please refresh and try again!');
                 return;
             }
-            const data = await fetch('http://localhost:3001/api/image/upload', {
+            const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/image/upload', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

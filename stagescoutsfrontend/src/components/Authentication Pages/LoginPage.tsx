@@ -23,7 +23,7 @@ function LoginPage(){
     }
 
     async function loginUser(){
-        const data = await fetch('http://localhost:3001/api/auth/login', {
+        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/auth/login', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

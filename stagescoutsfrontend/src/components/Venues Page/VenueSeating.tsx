@@ -21,7 +21,7 @@ function VenueSeating(){
     async function fetchSeatViews(){
         console.log("fetching seat views")
 
-        const data = await fetch('http://localhost:3001/api/image?venueId=' + venueId + '&venueName=' + venueName, {
+        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/image?venueId=' + venueId + '&venueName=' + venueName, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

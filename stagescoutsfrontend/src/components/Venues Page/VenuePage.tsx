@@ -22,7 +22,7 @@ function Venues(){
     // Fetch the Venues list from the Ticket Master API
     async function getVenues(page: number | null){
         page = page || 0
-        const data  = await fetch('http://localhost:3001/api/venues/all?pageNumber='+page, {
+        const data  = await fetch('https://stage-scouts-v1-backend.vercel.app/api/venues/all?pageNumber='+page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ function Venues(){
     async function searchVenue(){
         console.log("Searching your Venue");
         
-        const data = await fetch('http://localhost:3001/api/venues/search?keyword='+keyword, {
+        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/venues/search?keyword='+keyword, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
