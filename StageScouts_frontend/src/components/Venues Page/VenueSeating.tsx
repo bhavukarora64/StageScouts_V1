@@ -82,7 +82,7 @@ function VenueSeating(){
                         ))
                     ) : (
                             <div className="col-span-3 flex justify-center">
-                                <div className="w-96"><ImageUnavailable imageProp="md"/></div>
+                                <div className="w-96"><ImageUnavailable/></div>
                             </div>
                         
                     )}

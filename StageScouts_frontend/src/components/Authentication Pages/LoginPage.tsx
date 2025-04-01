@@ -14,7 +14,7 @@ import { isLoggedIn as loginState } from "../../assets/store/userAtom";
 function LoginPage(){
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-
+    console.log(isLoggedIn)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
