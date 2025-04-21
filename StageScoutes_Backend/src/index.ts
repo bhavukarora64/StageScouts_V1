@@ -12,8 +12,7 @@ import venuesRoute from './routes/venuesRoute';
 
 const app = express();
 
-app.use(cors());
-
+app.use(cors({ origin: 'https://stagescouts.bhavukarora.eu/', credentials: true }));
 app.options('*', cors());
 
 app.use(dbMiddleware);
