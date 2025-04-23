@@ -7,6 +7,7 @@ import Lock from "../../assets/Lock";
 import {useState} from 'react'
 import { useRecoilState } from "recoil";
 import { isLoggedIn as loginState } from "../../assets/store/userAtom";
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 
 
@@ -23,7 +24,7 @@ function LoginPage(){
     }
 
     async function loginUser(){
-        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/auth/login', {
+        const data = await fetch(`${backendBaseURL}/api/auth/login`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import Bin from "../../assets/Bin";
 import Button from "../Common Components/Button";
 import { useRef, useState } from "react";
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 // @ts-expect-error:Define a interface here as per the props
 function VenueSeatingModal(props){
@@ -72,7 +73,7 @@ function VenueSeatingModal(props){
                 alert('Something went wrong, please refresh and try again!');
                 return;
             }
-            const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/image/upload', {
+            const data = await fetch(`${backendBaseURL}/api/image/upload`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

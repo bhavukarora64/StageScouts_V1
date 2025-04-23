@@ -7,6 +7,7 @@ import Navbar from "../Events Page/Navbar";
 import Footer from "../Common Components/Footer";
 import ImageUnavailable from "../../assets/ImageUnavailable";
 import Search from "../../assets/Search";
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function Venues(){
 
@@ -22,7 +23,7 @@ function Venues(){
     // Fetch the Venues list from the Ticket Master API
     async function getVenues(page: number | null){
         page = page || 0
-        const data  = await fetch('https://stage-scouts-v1-backend.vercel.app/api/venues/all?pageNumber='+page, {
+        const data  = await fetch(`${backendBaseURL}/api/venues/all?pageNumber=` + page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ function Venues(){
     async function searchVenue(){
         console.log("Searching your Venue");
         
-        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/venues/search?keyword='+keyword, {
+        const data = await fetch(`${backendBaseURL}/api/venues/search?keyword=` + keyword, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

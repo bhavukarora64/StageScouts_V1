@@ -6,6 +6,7 @@ import Footer from "../Common Components/Footer";
 import Mail from "../../assets/Mail";
 import User from "../../assets/User";
 import Lock from "../../assets/Lock";
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function SignupPage() {
     const [name, setFullName] = useState("");
@@ -19,7 +20,7 @@ function SignupPage() {
             return
         }
 
-        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/auth/signup', {
+        const data = await fetch(`${backendBaseURL}/api/auth/signup[]`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

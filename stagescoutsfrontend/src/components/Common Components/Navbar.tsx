@@ -5,6 +5,7 @@ import {isLoggedIn as loginState} from "../../assets/store/userAtom";
 import { useRecoilState} from "recoil";
 import Register from '../../assets/Register';
 import { List, LogIn, LogOut } from 'lucide-react';
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 
 
@@ -25,7 +26,7 @@ function Navbar(){
             return false;
           }
     
-          const response = await fetch(`https://stage-scouts-v1-backend.vercel.app/me`, {
+          const response = await fetch(`${backendBaseURL}/me`, {
             method: "GET",
             headers: { "authorization": token }
           });
@@ -33,6 +34,8 @@ function Navbar(){
           const userData = await response.json();
           if(userData.error === null && userData.userId){
             setIsLoggedIn(true);
+          }else{
+            console.log("Please login")
           }
         } catch (error) {
           console.error("Error checking user:", error);
@@ -51,7 +54,7 @@ function Navbar(){
                 <Link to={"/"}><h1 className={(scrollPosition > 10 ? "text-black":"text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,1)]" ) + " " + "text-lg sm:text-xl md:text-2xl lg:text-3xl  xl:text-4xl mt-2 font-serif"}>Stage Scouts</h1></Link>
                 <div className="lg:flex gap-10 mt-4 hidden">
                     {navBarElements.map((element, index) => (
-                        <Link to={"/" + element}>
+                        <Link key={index} to={"/" + element}>
                             <span id={String(index)} className={(scrollPosition > 10 ? "text-black":"text-white font-bold" ) + " " + "text-xl hover:text-[#0f92c9] transition-all duration-300 cursor-pointer"}>
                                 {element}
                             </span>
@@ -72,7 +75,7 @@ function Navbar(){
                     <div  className={"absolute top-8 right-2 h-auto w-auto drop-shadow-2xl z-70" + (listVisible ? " block" : " hidden")}>
                         <div className='flex flex-col gap-2 mt-2'>
                             {navBarElementsList.map((element, index) => (
-                                <Link to={"/" + element}>
+                                <Link key={index} to={"/" + element}>
                                     <span id={String(index)} className="text-black text-lg hover:text-[#0f92c9] transition-all duration-300 cursor-pointer bg-white w-24 rounded-md md:py-1 text-center flex items-center justify-center">
                                         {element}
                                     </span>

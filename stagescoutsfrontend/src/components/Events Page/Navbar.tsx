@@ -5,6 +5,7 @@ import {isLoggedIn as loginState} from "../../assets/store/userAtom";
 import { useRecoilState} from "recoil";
 import Register from '../../assets/Register';
 import { List, LogIn, LogOut } from 'lucide-react';
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 
 
@@ -25,15 +26,17 @@ function Navbar(){
             return false;
           }
     
-          const response = await fetch(`https://stage-scouts-v1-backend.vercel.app/me`, {
+          const response = await fetch(`${backendBaseURL}/me`, {
             method: "GET",
             headers: { "authorization": token }
           });
     
           const userData = await response.json();
-          if(userData.error === null && userData.userId){
-            setIsLoggedIn(true);
-          }
+            if(userData.error === null && userData.userId){
+                setIsLoggedIn(true);
+            }else{
+                console.log("Please login")
+            }
         } catch (error) {
           console.error("Error checking user:", error);
           return false;

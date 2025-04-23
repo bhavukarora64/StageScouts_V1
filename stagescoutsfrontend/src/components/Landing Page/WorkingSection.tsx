@@ -29,7 +29,7 @@ function WorkingSection(){
             <h1 className="text-3xl font-bold my-10 text-center">How It Works</h1>
             <div className="grid grid-cols-12">
                 { benefits.map((benefit, index) => (
-                    <div id={index.toString()} className="mx-4 pt-5 mt-7 pb-5 border-1 border-gray-300  bg-white rounded-xl col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4">
+                    <div key={index} id={index.toString()} className="mx-4 pt-5 mt-7 pb-5 border-1 border-gray-300  bg-white rounded-xl col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4">
                         <div className="flex justify-center mb-10">{benefit.image}</div>
                         <div className="ml-5 mt-5 leading-5 text-center">
                             <h1 className="font-bold text-2xl mb-3">{benefit.benefitTitle}</h1>

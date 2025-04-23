@@ -8,7 +8,7 @@ import LeftArrow from "../../assets/LeftArrow";
 import VenueSeatingModal from "./VenueSeatingModal";
 import { useEffect, useState } from "react";
 import Upload from "../../assets/Upload";
-
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 
 function VenueSeating(){
@@ -21,7 +21,7 @@ function VenueSeating(){
     async function fetchSeatViews(){
         console.log("fetching seat views")
 
-        const data = await fetch('https://stage-scouts-v1-backend.vercel.app/api/image?venueId=' + venueId + '&venueName=' + venueName, {
+        const data = await fetch(`${backendBaseURL}/api/image?venueId=` + venueId + '&venueName=' + venueName, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

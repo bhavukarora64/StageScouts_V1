@@ -4,6 +4,8 @@ import Location from "../../assets/Location";
 import Button from "../Common Components/Button";
 import Date from "../../assets/Date";
 import { useEffect, useRef, useState } from "react";
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
+const frontendBaseURL = import.meta.env.VITE_FRONTEND_BASE_URL;
 
 function UpcomingEvents(){
 
@@ -27,7 +29,7 @@ function UpcomingEvents(){
 
     // Fetch the Events list from the Ticket Master API
     async function getEvents(page:number | null){
-        const data  = await fetch('https://stage-scouts-v1-backend.vercel.app/api/events/all?pageNumber=' + page, {
+        const data  = await fetch(`${backendBaseURL}/api/events/all?pageNumber=` + page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'applicatiposton/json'
@@ -75,7 +77,7 @@ function UpcomingEvents(){
                         </div>
                         <div className="mx-5 flex flex-col justify-center items-center">
                                     <Button onClick={() => {navigate(event.eventURL)}} title="Buy Tickets" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/>
-                                    <Link to={"https://stage-scouts.vercel.app/venueSeating?venueName=" + event.eventVenue} className="flex gap-2 mt-2 hover:underline">
+                                    <Link to={`${frontendBaseURL}/venueSeating?venueName=` + event.eventVenue} className="flex gap-2 mt-2 hover:underline">
                                         <p>Visit Seating </p> 
                                         <RightArrow imageProp="md"/>
                                     </Link>

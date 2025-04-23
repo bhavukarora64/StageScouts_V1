@@ -1,67 +1,52 @@
 import jwt from 'jsonwebtoken'
-import { v4 as uuid4 } from 'uuid'
-import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv'
 dotenv.config();
-// @ts-ignore
-function userAuth(req, res, next){
-    try{
-        const {authorization} = req.headers;
-        console.log("Checking User Auth...")
 
-        if(!authorization){
+//@ts-ignore
+function userAuth(req, res, next) {
+    try {
+        const { authorization } = req.headers;
+        console.log("Checking User Auth...");
+
+        if (!authorization) {
             return res.status(401).json({
-                "error": 'JWT Does not exists, Please Re-Login'
-            })
+                error: 'JWT does not exist, please re-login'
+            });
         }
-// @ts-ignore
-        const response = jwt.verify(authorization, process.env.JWT_SECRET, (err, result) => {
-            if(err){
-                return res.status(401).json({
-                    "error": 'JWT Expired or Does not exists, Please Re-Login'
-                })
+
+        //@ts-ignore
+        const decoded = jwt.verify(authorization, process.env.JWT_SECRET);
+        const userId = decoded.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                error: 'Invalid JWT, please re-login'
+            });
+        }
+
+        //@ts-ignore
+        req.db.query('SELECT userId FROM Users WHERE userId = ?', [userId], (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    error: "Something went wrong, please try again later."
+                });
             }
 
-            return result;
+            if (!result || !result.length) {
+                return res.status(404).json({
+                    error: "User does not exist."
+                });
+            }
+
+            req.userId = userId;
+            next();
         });
-        
-        if(response){
-            // @ts-ignore
-            req.db.query('SELECT userId from Users WHERE userId = ?', [response.userId], (err, userRecord) => {
-                if(err){
-                    return res.status(500).json({
-                                "error":  "Something Went Wrong, Please try again after refreshing the page!"
-                            })
-                }
-// @ts-ignore
-                if(!userRecord[0].userId || !response.userId){
-                    return res.status(500).json({
-                        "error":  "Something Went Wrong, Please try again after refreshing the page!"
-                    })
-                }
-// @ts-ignore
-                if(userRecord[0].userId == response.userId){
-                    // @ts-ignore
-                    req.userId = response.userId;
-                    console.log(req);
-                    next();
-                }else{
-                    return res.status(404).json({
-                        "error": 'User Does not exist!'
-                    })
-                }
-            })
-        }else{
-            return res.status(401).json({
-                "error": 'JWT Expired or Does not exists, Please Re-Login'
-            })
-        }
-    }catch(e){
-       return res.status(500).json({
-            "error":  "Something Went Wrong, Please try again after refreshing the page!"
-        })
+
+    } catch (e) {
+        return res.status(401).json({
+            error: 'JWT expired or invalid, please re-login'
+        });
     }
-    
 }
 
-export default userAuth        
+export default userAuth;
