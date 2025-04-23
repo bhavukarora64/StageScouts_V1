@@ -28,11 +28,8 @@ function VenueSeatingModal(props){
     };
 // @ts-expect-error:Define a interface here as per the props
     const handleOnChange = (event) => {
-        // @ts-expect-error: Add a condition here ternary
-        console.log(fileInputRef.current.files)
         const file = event.target.files[0];
         if (!file) return;
-        console.log("Processed the Image, and added to the ref.");
     
         const url = URL.createObjectURL(file);
         setTempURL(url);
@@ -73,7 +70,7 @@ function VenueSeatingModal(props){
                 alert('Something went wrong, please refresh and try again!');
                 return;
             }
-            const data = await fetch(`${backendBaseURL}/api/image/upload`, {
+            await fetch(`${backendBaseURL}/api/image/upload`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,9 +87,6 @@ function VenueSeatingModal(props){
             })
 
         })
-
-            const response = await data.json();
-            console.log(response);
 
             props.setVisible(false)
         } catch (error) {

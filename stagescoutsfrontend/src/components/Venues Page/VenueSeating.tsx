@@ -19,7 +19,6 @@ function VenueSeating(){
     const [seats, setSeats] = useState([]);
 
     async function fetchSeatViews(){
-        console.log("fetching seat views")
 
         const data = await fetch(`${backendBaseURL}/api/image?venueId=` + venueId + '&venueName=' + venueName, {
             method: 'GET',
@@ -29,7 +28,6 @@ function VenueSeating(){
         })
 
         const response = await data.json();
-        console.log(response)
         setSeats(response);
     }
 

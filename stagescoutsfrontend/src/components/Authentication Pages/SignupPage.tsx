@@ -19,8 +19,8 @@ function SignupPage() {
             alert("Passwords do not match");
             return
         }
-
-        const data = await fetch(`${backendBaseURL}/api/auth/signup[]`, {
+    
+        await fetch(`${backendBaseURL}/api/auth/signup[]`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,9 +32,6 @@ function SignupPage() {
             })
         });
 
-        const response = await data.json();
-
-        console.log(response)
     }
 
     return (

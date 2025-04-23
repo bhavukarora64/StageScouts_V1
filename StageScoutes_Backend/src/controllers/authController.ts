@@ -8,7 +8,6 @@ dotenv.config();
 async function userSignup(req, res) {
     try {
         const { name, email, password }: { name: string, email: string, password: string } = req.body;
-        console.log(name)
 
         const userId = uuid4();
 

@@ -42,7 +42,6 @@ function Venues(){
     }, [])
 
     async function searchVenue(){
-        console.log("Searching your Venue");
         
         const data = await fetch(`${backendBaseURL}/api/venues/search?keyword=` + keyword, {
             method: 'GET',

@@ -9,9 +9,6 @@ import { useRecoilState } from "recoil";
 import { isLoggedIn as loginState } from "../../assets/store/userAtom";
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-
-
-
 function LoginPage(){
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
