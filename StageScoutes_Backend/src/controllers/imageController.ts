@@ -39,40 +39,8 @@ function getImages(req, res){
         })
     }
 }
+
 // @ts-ignore
-// function publishImages(req, res){
-//     try{
-//         const {UserId, StadiumName, StadiumStand, StadiumSeats, ImageName} = req.body;
-
-//         if(!UserId || !StadiumName || !StadiumStand || !StadiumSeats || !ImageName){
-//             return res.status(400).json({
-//                 "error": "Mandatory Values Missing, Please check !"
-//             })
-//         }
-
-//         const ImageId = uuid4(); 
-    
-//         const newImage = {ImageId: ImageId, UserId: UserId, StadiumId: StadiumName, StandName: StadiumStand, SeatNumber: StadiumSeats, ImageName: ImageName};
-//     // @ts-ignore
-//         //Adding Image
-//         req.db.query('INSERT INTO UserUploads SET ?', newImage, (err, result) => {
-//             if(err){
-//                 return res.status(500).json({
-//                     "error": "Something Went Wrong, Please try again after refreshing the page!"
-//                 })
-//             }
-        
-//         res.json(result);
-        
-//         });
-//     }catch(e){
-//         return res.status(500).json({
-//             "error": "Something Went Wrong, Please try again after refreshing the page!"
-//         })
-//     }
-    
-// }
-
 function publishImages(req, res){
     try{
 
@@ -94,8 +62,15 @@ function publishImages(req, res){
                     "error": "Something Went Wrong, Please try again after refreshing the page! : " + err
                 })
             }
-        
-        res.json(result);
+            if(result.affectedRows == 0){
+                return res.status(500).json({
+                    "error": "Something Went Wrong, Please try again after refreshing the page!"
+                })
+            }else{
+                return res.status(200).json({
+                    "message": "Image Published Successfully!"
+                })
+            }
         
         });
     }catch(e){

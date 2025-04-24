@@ -76,11 +76,11 @@ function Venues(){
                         {
                         venues.map((venues) => (
                             // @ts-expect-error:Define a interface here as per the props
-                            <div key={venues.venueId} className="transition-all duration-300 ease-in-out mx-4 pb-5 my-4 border-1 border-gray-300 rounded-xl hover:scale-110 col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4 h-auto">
+                            <div key={venues.venueId} className="transition-all duration-300 ease-in-out mx-4 pb-5 my-4 border-1 border-gray-300 rounded-xl hover:scale-105 col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4 h-auto flex flex-col justify-between">
                             {/* @ts-expect-error:Define a interface here as per the props */}
                                 {venues.venueImage !== "unavailable" ? (
                             // @ts-expect-error:Define a interface here as per the props
-                                    <img src={venues.venueImage} className="rounded-t-xl h-64 lg:h-76 xl:86 w-full" alt="Venue" />
+                                    <img src={venues.venueImage} className="rounded-t-xl h-64 lg:h-76 xl:86 w-auto" alt="Venue" />
                                     ) : (
                                     <ImageUnavailable />
                                 )}
@@ -96,7 +96,7 @@ function Venues(){
                                 </div>
                                 <div className="flex flex-col gap-5 text-center mx-3">
                                 {/* @ts-expect-error:Define a interface here as per the props */}
-                                    <Link to={"/venueSeating?venueId=" + venues.venueId +  "&venueName=" + venues.venueName}><Button title="Visit Seating" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/></Link>
+                                    <Link to={"/venueSeating?venueId=" + venues.venueId +  "&venueName=" + venues.venueName} className="flex justify-center"><Button title="Visit Seating" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-[90%]"/></Link>
                                 </div>
                             </div>
                         ))}

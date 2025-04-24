@@ -60,8 +60,8 @@ function FeatureSection(){
                             <br></br>
                         </div>
                         <div className="mx-5 mb-2">
-                            <Link to={`${frontendBaseURL}/venueSeating?venueName=` + event.eventVenue}>
-                                <Button title="Visit Seating" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-full"/>
+                            <Link to={`${frontendBaseURL}/venueSeating?venueName=` + event.eventVenue} className="flex justify-center">
+                                <Button title="Visit Seating" buttonType="primary" buttonSize="lg" backIcon={<RightArrow imageProp="md"/>} customStyle="w-[95%]"/>
                             </Link>
                         </div>
                     </div>))}

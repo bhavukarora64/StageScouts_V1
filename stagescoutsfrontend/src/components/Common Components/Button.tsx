@@ -32,6 +32,7 @@ function Button(props: ButtonProps){
                 {props.title}
             {props.backIcon}
         </button>
+        
     )
 }
 

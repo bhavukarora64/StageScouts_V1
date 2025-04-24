@@ -16,6 +16,7 @@ function VenueSeatingModal(props){
     const [searchParams] = useSearchParams()
     const venueId = searchParams.get('venueId')
     const venueName = searchParams.get('venueName')
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleClick = () => {
         if (fileInputRef.current) {
@@ -53,7 +54,7 @@ function VenueSeatingModal(props){
         }
     
         const file = fileInputRef.current.files[0];
-    
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', "unsigned_Images");
@@ -70,7 +71,7 @@ function VenueSeatingModal(props){
                 alert('Something went wrong, please refresh and try again!');
                 return;
             }
-            await fetch(`${backendBaseURL}/api/image/upload`, {
+            const data = await fetch(`${backendBaseURL}/api/image/upload`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -88,8 +89,18 @@ function VenueSeatingModal(props){
 
         })
 
-            props.setVisible(false)
+        const response = await data.json();
+        if(!response.error){
+            props.setVisible(false);
+            setIsLoading(false);
+        }else{
+            alert(response.error);
+            setIsLoading(false);
+        }
+
+            
         } catch (error) {
+            setIsLoading(false);
             console.error("Error uploading image:", error);
             alert("Upload failed, please try again.: " + error);
         }
@@ -107,8 +118,8 @@ function VenueSeatingModal(props){
                         <label className="col-span-1 text-right text-lg">Name</label>
                         <input 
                             type="text"
-                            value={reviewerName} 
-                            placeholder="Enter your name" 
+                            value={reviewerName}
+                            placeholder="Enter your name"
                             className="border border-gray-300 rounded-md col-span-4 px-3 py-1"
                             onChange={(e) => setReviewerName(e.target.value)}
                         />
@@ -206,7 +217,7 @@ function VenueSeatingModal(props){
                         </div>
                         <div className="col-span-5 flex justify-end gap-3">
                             <Button onClick={onClose} buttonType="secondary" buttonSize="sm" title="Close" />
-                            <Button onClick={publishImage} buttonType="primary" buttonSize="sm" title="Submit" />
+                            {isLoading ? <Button buttonType="primary" buttonSize="sm" title="Uploading" />  : <Button onClick={publishImage} buttonType="primary" buttonSize="sm" title="Submit" />}
                         </div>
                     </div>
                 </div>

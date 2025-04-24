@@ -24,9 +24,16 @@ async function userSignup(req, res) {
         // Adding User
         req.db.query('INSERT INTO Users SET ?', newUser, (err: any) => {
             if (err) {
-                return res.status(500).json({
-                    'error': "Something Went Wrong, Please try again after refreshing the page!: " +err
-                });
+                if(err.code === 'ER_DUP_ENTRY'){
+                    return res.status(400).json({
+                        'error': "User already exists with this email"
+                    });
+                }else{
+                    return res.status(500).json({
+                        'error': "Somthing Went wrong, Please try again after refreshing the page!"
+                    });
+                }
+               
             }
 
             // Adding Credentials
@@ -35,7 +42,7 @@ async function userSignup(req, res) {
             req.db.query('INSERT INTO UserCredentials SET ?', newUserCredentials, (err: any) => {
                 if (err) {
                     return res.status(500).json({
-                        'error': "Something Went Wrong, Please try again after refreshing the page!"
+                        'error': err
                     });
                 }
 
@@ -54,7 +61,7 @@ async function userSignup(req, res) {
 // @ts-ignore
 function userLogin(req, res) {
     try {
-        const { email, password }: { email: string, password: string } = req.headers;
+        const { email, password }: { email: string, password: string } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({

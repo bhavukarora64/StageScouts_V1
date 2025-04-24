@@ -11,7 +11,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function Navbar(){
     const navBarElements = ["Home", "Events", "Venues", "About", "Contact"];
-    const navBarElementsList = ["Home", "Events", "Venues", "About", "Contact", "Login", "Signup"];
+    const navBarElementsList = ["Home", "Events", "Venues", "About", "Contact", "Signup"];
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
     const navigate = useNavigate();
     const [scrollPosition, setScrollPosition] = useState(0);
@@ -72,7 +72,7 @@ function Navbar(){
                 </div>
                 <div className=' flex gap-6 mt-2 lg:hidden'>
                     <div onClick={() => setListVisible(!listVisible)} className='cursor-pointer relative'><List size={25} style={{color: scrollPosition > 10 ? "Black" : "white"}}/></div>
-                    <div  className={"absolute top-8 right-2 h-auto w-auto drop-shadow-2xl z-70" + (listVisible ? " block" : " hidden")}>
+                    <div  className={"absolute top-8 right-2 h-auto w-24 flex bg-white drop-shadow-2xl z-70" + (listVisible ? " block" : " hidden")}>
                         <div className='flex flex-col gap-2 mt-2'>
                             {navBarElementsList.map((element, index) => (
                                 <Link key={index} to={"/" + element}>
@@ -81,6 +81,17 @@ function Navbar(){
                                     </span>
                                 </Link>
                             ))}
+                            {
+                                isLoggedIn 
+                                ?
+                                <span onClick={logoutUser} className="text-black text-lg hover:text-[#0f92c9] transition-all duration-300 cursor-pointer bg-white w-24 rounded-md md:py-1 text-center flex items-center justify-center">
+                                    Logout
+                                </span>
+                                :
+                                <span onClick={loginUser} className="text-black text-lg hover:text-[#0f92c9] transition-all duration-300 cursor-pointer bg-white w-24 rounded-md md:py-1 text-center flex items-center justify-center">
+                                    Login
+                                </span>
+                            }
                         </div>
                     </div>
                 </div>

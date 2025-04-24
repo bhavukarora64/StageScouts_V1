@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import Star from "../../assets/Star";
 import Button from "../Common Components/Button";
 import Navbar from "../Events Page/Navbar";
@@ -8,6 +8,8 @@ import LeftArrow from "../../assets/LeftArrow";
 import VenueSeatingModal from "./VenueSeatingModal";
 import { useEffect, useState } from "react";
 import Upload from "../../assets/Upload";
+import { useRecoilState } from "recoil";
+import { isLoggedIn as loginState } from "../../assets/store/userAtom";
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 
@@ -17,6 +19,8 @@ function VenueSeating(){
     const venueName = searchParams.get('venueName')
     const [visible, setVisible] = useState(false);
     const [seats, setSeats] = useState([]);
+    const [isLoggedIn] = useRecoilState(loginState);
+    const navigate = useNavigate();
 
     async function fetchSeatViews(){
 
@@ -37,7 +41,7 @@ function VenueSeating(){
 
     return (
         <div>
-            <VenueSeatingModal visible={visible} setVisible={setVisible}/>
+            <VenueSeatingModal visible={visible} setVisible={setVisible} />
             <Navbar />
             <div className="w-full px-18 pt-20 pb-20">
                 <Link to="/venues" className="flex gap-5 w-30 items-center mr-5 hover:underline my-10"> 
@@ -50,36 +54,44 @@ function VenueSeating(){
                         <p>Browse photos uploaded by fans to see the view from different seats</p>
                     </div>
                         <div className="flex items-center gap-2 cursor-pointer">
-                            <Button onClick={() => setVisible(prevValue => !prevValue)} title="Upload" buttonType="primary" buttonSize="md" frontIcon={<Upload imageProp="md"/>} customStyle="w-full"/>
-                            {/* <Button title="All Sections" buttonType="secondary" buttonSize="md"/> */}
+                            <Button onClick={() => {
+                                if (isLoggedIn) {
+                                    setVisible(prevValue => !prevValue);
+                                } else {
+                                    navigate('/login');
+                                }
+                            }} title="Upload" buttonType="primary" buttonSize="md" frontIcon={<Upload imageProp="md"/>} customStyle="w-full"/>
                         </div>
                 </div>
-                <div className="grid grid-cols-3">
+                <div className="grid grid-cols-12">
                    {seats.length > 0 ? (
-                        seats.map((venues: { seatId: string; seatImage: string; seatImageURL: string; rowSeats: string; rating: number; comment: string; reviewerName: string; reviewDate: string }) => (
-                            <div key={venues.seatId} className="transition-all duration-300 ease-in-out mx-4 pb-5 my-4 border-1 border-gray-300 rounded-xl hover:scale-110">
-                                {venues.seatImage !== "unavailable" ? (
-                                    <img src={venues.seatImageURL} className="rounded-t-xl h-56 w-full" alt="Venue" />
-                                ) : (
-                                    <ImageUnavailable />
-                                )}
-                                <div className="flex w-full justify-between px-4 mt-5 font-bold">
-                                    <h1>{venues.rowSeats}</h1>
-                                    <div className="flex items-center">
-                                        {Array.from({ length: venues.rating }, (_, i) => (
-                                            <Star key={i} imageProp="md" />
-                                        ))}
+                        seats.map((venues: { seatId: string; seatImage: string; seatImageURL: string; rowSeats: string; rating: number; comment: string; reviewerName: string; reviewDate: string }) => { 
+                            return(
+                                <div key={venues.seatId} className="transition-all duration-300 ease-in-out mx-4 pb-5 my-4 border-1 border-gray-300 rounded-xl hover:scale-110 col-span-12 md:col-span-6 xl:col-span-4">
+                                    {venues.seatImage !== "unavailable" ? (
+                                        <div className="flex justify-center bg-gray-200">
+                                            <img src={venues.seatImageURL} className="h-72 w-auto " alt="Venue" />
+                                        </div>
+                                    ) : (
+                                        <ImageUnavailable />
+                                    )}
+                                    <div className="flex w-full justify-between px-4 mt-5 font-bold">
+                                        <h1>{venues.rowSeats}</h1>
+                                        <div className="flex items-center">
+                                            {Array.from({ length: venues.rating }, (_, i) => (
+                                                <Star key={i} imageProp="md" />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="px-4">{venues.comment}</div>
+                                    <div className="flex w-full justify-between px-4 pt-10 text-gray-500">
+                                        <h1>{venues.reviewerName}</h1>
+                                        <h1>{(venues.reviewDate).split('T')[0]}</h1>
                                     </div>
                                 </div>
-                                <div className="px-4">{venues.comment}</div>
-                                <div className="flex w-full justify-between px-4 pt-10 text-gray-500">
-                                    <h1>{venues.reviewerName}</h1>
-                                    <h1>{venues.reviewDate}</h1>
-                                </div>
-                            </div>
-                        ))
+                            )})
                     ) : (
-                            <div className="col-span-3 flex justify-center">
+                            <div className="col-span-12 flex justify-center">
                                 <div className="w-96"><ImageUnavailable/></div>
                             </div>
                         

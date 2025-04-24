@@ -4,7 +4,7 @@ import {userSignup, userLogin, userVerification} from '../controllers/authContro
 
 const router = express.Router();
 // @ts-ignore
-router.get('/login', userLogin)
+router.post('/login', userLogin)
 // @ts-ignore
 router.post('/signup', userSignup)
 // @ts-ignore

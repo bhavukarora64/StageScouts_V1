@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../Common Components/Button";
 import Navbar from "../Events Page/Navbar";
 import Footer from "../Common Components/Footer";
@@ -13,14 +13,15 @@ function SignupPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const navigate = useNavigate();
 
     async function registerUser() {
         if(password !== confirmPassword){
             alert("Passwords do not match");
             return
         }
-    
-        await fetch(`${backendBaseURL}/api/auth/signup[]`, {
+
+        const data = await fetch(`${backendBaseURL}/api/auth/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,13 +33,22 @@ function SignupPage() {
             })
         });
 
+        const response = await data.json();
+
+        if(response.error){
+            alert(response.error);
+            return
+        }else{
+            alert(response.message);
+            navigate('/login');
+        }
     }
 
     return (
         <>
             <Navbar />
             <div className="w-screen h-screen flex flex-col items-center justify-center">
-                <div className="gap-5 mt-5 h-auto w-auto pb-5 rounded-lg pt-5 shadow-md bg-white">
+                <div className="gap-5 mt-5 h-auto w-86 sm:w-1/2 md:w-1/2 lg:w-1/3 2xl:w-[25%] pb-5 rounded-lg pt-5 shadow-md bg-white">
                     <h1 className="text-2xl font-bold text-center mb-2">Create an Account</h1>
                     <p className="text-sm font-light text-center">Join thousands of venue explorers today</p>
                     <div className="flex flex-col gap-2 mt-5 mx-10">
@@ -87,7 +97,7 @@ function SignupPage() {
                             />
                         </div>
                         <div className="flex flex-col justify-center items-center mt-5 gap-2">
-                            <Button title="Sign In" buttonType="primary" buttonSize="md-long" onClick={registerUser} />
+                            <Button title="Sign In" buttonType="primary" buttonSize="xl" onClick={registerUser} />
                             <Link to="/login"><p className="text-sm hover:underline hover:cursor-pointer">Already have an account? <span className="font-medium">Sign in</span></p></Link>
                         </div>
                     </div>
